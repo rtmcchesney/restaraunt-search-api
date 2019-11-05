@@ -1,3 +1,6 @@
+Routes-
+trackRoutes.js_
+
 const express = require("express");
 const mongoose = require("mongoose");
 const requireAuth = require("../middlewares/requireAuth");
@@ -32,3 +35,34 @@ router.post("/tracks", async (req, res) => {
 });
 
 module.exports = router;
+
+Models-
+Track.js-
+
+const mongoose = require("mongoose");
+
+const pointSchema = new mongoose.Schema({
+  timestamp: Number,
+  coords: {
+    latitude: Number,
+    longitude: Number,
+    altitude: Number,
+    accuracy: Number,
+    heading: Number,
+    speed: Number
+  }
+});
+
+const trackSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+  name: {
+    type: String,
+    default: ""
+  },
+  locations: [pointSchema]
+});
+
+mongoose.model("Track", trackSchema);
